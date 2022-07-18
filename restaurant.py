@@ -5,27 +5,8 @@ price_food = [50.50, 45.50, 62.31, 45.00, 55.00, 80.99, 20.05, 20.65]
 price_beverages = [45.50, 39.99, 37.21, 51.54, 61.08, 71.10, 20.00, 31.58]
 
 
-#Funcion que agrega los numeros al panel calculadora
-def click_button(number):
-    global operador
-    operador = operador + number
-    calculator_view.delete(0, END)
-    calculator_view.insert(END, operador)
 
-def delete():
-    global  operador
-    operador = ''
-    calculator_view.delete(0, END)
-
-#Obtener el resultado convirtiendo a str
-def get_result():
-    global  operador
-    result = str(eval(operador))
-    calculator_view.delete(0, END)
-    calculator_view.insert(0, result)
-    operador = ''
-
-#Validar si eñ check o frame esta activo o no
+#Validar si el check o frame esta activo o no
 def revise_check():
     x = 0
     for i in food_frame:
@@ -105,7 +86,7 @@ def cal_reset():
 app = Tk()
 
 # Medidas de la ventana
-app.geometry('1200x630+0+0')
+app.geometry('1100x630+0+0')
 
 
 app.title("Sistema de Facturacion")
@@ -135,24 +116,14 @@ food_panel = LabelFrame(left_panel, text='Comida', font=('Dosis', 19, 'bold'),bd
 food_panel.pack(side=LEFT)
 
 # Panel de bebidas
-beverages_panel = LabelFrame(left_panel, text='Bebidas', font=('Dosis', 19, 'bold'),bd=1, relief=FLAT, fg='AntiqueWhite')
+beverages_panel = LabelFrame(left_panel, text='Bebidas', font=('Dosis', 19, 'bold'),bd=1, relief=FLAT, fg='saddle brown')
 beverages_panel.pack(side=LEFT)
 
-# Panel postres
-desserts_panel = LabelFrame(left_panel, text='Postres', font=('Dosis', 19, 'bold'),bd=1, relief=FLAT, fg='AntiqueWhite')
-desserts_panel.pack(side=LEFT)
 
 # Panel derecha
 right_panel = Frame(app, bd=1, relief=FLAT)
 right_panel.pack(side=RIGHT)
 
-# Panel calculadora
-calculator_panel = Frame(right_panel, bd=1, relief=FLAT, bg='LightSkyBlue4')
-calculator_panel.pack()
-
-# Panel recibo
-receipt_panel = Frame(right_panel, bd=1, relief=FLAT, bg='LightSkyBlue4')
-receipt_panel.pack()
 
 # Panel calculadora
 button_panel = Frame(right_panel, bd=1, relief=FLAT, bg='LightSkyBlue4')
@@ -161,7 +132,7 @@ button_panel.pack()
 # lista de productos
 food_list = ['Hamburguesa', 'Pizza', 'Hot dog', 'Papas', 'Nuggets', 'Alitas']
 beverages_list = ['Agua', 'Soda', 'Jugo', 'Coca Cola','Cerveza', 'Malteada']
-desserts_list = ['Flan', 'brownies', 'Pastel', 'Helado', 'Crepa']
+
 
 #generar producto de comida en una lista
 food_val = []
@@ -175,7 +146,7 @@ for food in food_list:
     #Crear el check
     food_val.append('') #Se agrega un elemento vacio
     food_val[account] = IntVar()
-    food = Checkbutton(food_panel, text=food.title(), font=('Dosis',19, 'bold'),onvalue=1, offvalue=0, variable=food_val[account], command=revise_check)
+    food = Checkbutton(food_panel, text=food.title(), font=('Dosis',16, 'bold'),onvalue=1, offvalue=0, variable=food_val[account], command=revise_check)
     food.grid(row=account, column=0, stick=W)
 
     #Se crea el cuadro de entrada
@@ -184,7 +155,7 @@ for food in food_list:
     food_text.append('')
     food_text[account] = StringVar()
     food_text[account].set('0')
-    food_frame[account] = Entry(food_panel, font=('Dosis', 18, 'bold'), bd=1, width=6, state=DISABLED, textvariable=food_text[account])
+    food_frame[account] = Entry(food_panel, font=('Dosis', 16, 'bold'), bd=1, width=6, state=DISABLED, textvariable=food_text[account])
 
     food_frame[account].grid(row=account, column=1)
 
@@ -201,7 +172,7 @@ for beverages in beverages_list:
     # Crear el check
     beverages_val.append('') #Se agrega un elemento vacio
     beverages_val[account] = IntVar()
-    beverages = Checkbutton(beverages_panel, text=beverages.title(), font=('Dosis',19, 'bold'),onvalue=1, offvalue=0, variable=beverages_val[account], command=revise_check)
+    beverages = Checkbutton(beverages_panel, text=beverages.title(), font=('Dosis',16, 'bold'),onvalue=1, offvalue=0, variable=beverages_val[account], command=revise_check)
     beverages.grid(row=account, column=0, stick=W)
 
     # Se crea el frame de entrada
@@ -209,36 +180,11 @@ for beverages in beverages_list:
     beverages_text.append('')
     beverages_text[account] = StringVar()
     beverages_text[account].set('0')
-    beverages_frame[account] = Entry(beverages_panel, font=('Dosis', 18, 'bold'), bd=1, width=6, state=DISABLED, textvariable=beverages_text[account])
+    beverages_frame[account] = Entry(beverages_panel, font=('Dosis', 16, 'bold'), bd=1, width=6, state=DISABLED, textvariable=beverages_text[account])
 
     beverages_frame[account].grid(row=account, column=1)
     account += 1
 
-
-#Crear una lista posrtres
-desserts_val = []
-desserts_frame = []
-desserts_text = []
-
-#Se hace un recorrido para agregar el check de cada postre
-account = 0
-for desserts in desserts_list:
-
-    # Crear el check
-    desserts_val.append('') #Se agrega un elemento vacio
-    desserts_val[account] = IntVar()
-    desserts = Checkbutton(desserts_panel, text=desserts.title(), font=('Dosis',19, 'bold'),onvalue=1, offvalue=0, variable=desserts_val[account], command=revise_check)
-    desserts.grid(row=account, column=0, stick=W)
-
-    # Se crea el frame de entrada
-    desserts_frame.append('')
-    desserts_text.append('')
-    desserts_text[account] = StringVar()
-    desserts_text[account].set('0')
-    desserts_frame[account] = Entry(desserts_panel, font=('Dosis', 18, 'bold'), bd=1, width=6, state=DISABLED, textvariable=desserts_text[account])
-
-    desserts_frame[account].grid(row=account, column=1)
-    account += 1
 
 
 #Se generan las variables locales
@@ -262,11 +208,7 @@ tag_cost_beverages.grid(row=1, column=0)
 text_cost_beverages = Entry(cost_panel, font=('Dosis', 12, 'bold'), bd=1, width=10, state='readonly', textvariable=var_cost_beverages)
 text_cost_beverages.grid(row=1, column=1, padx=41)
 
-tag_cost_desserts = Label(cost_panel, text='Costo Postres', font=('Dosis', 12, 'bold'), bg='CadetBlue3', fg='white')
-tag_cost_desserts.grid(row=2, column=0)
 
-text_cost_desserts = Entry(cost_panel, font=('Dosis', 12, 'bold'), bd=1, width=10, state='readonly', textvariable=var_cost_desserts)
-text_cost_desserts.grid(row=2, column=1, padx=41)
 
 
 #Se agran los elementos para que aparezcan los calculos realizados
@@ -291,7 +233,7 @@ text_total.grid(row=2, column=3, padx=30)
 
 # Botones se crea una lista para poder hacer recorridos
 
-buttons = ['total', 'recibo', 'guardar', 'reset']
+buttons = ['total', 'Borrar']
 columns = 0
 buttons_create = []
 
@@ -307,53 +249,7 @@ buttons_create[0].config(command=total)
 buttons_create[1].config(command=cal_reset)
 
 
-#Panel Recibo
 
-text_receipt = Text(receipt_panel, font=('Dosis', 12, 'bold'), bd=1, width=42, height=10)
-text_receipt.grid(row=0, column=0)
-
-#Calculadora
-calculator_view = Entry(calculator_panel, font=('Dosis', 16, 'bold'), width=22, bd=1)
-calculator_view.grid(row=0, column=0,columnspan=3)
-
-cal_buttons = ['7', '8', '9', '+', '4', '5', '6', '-', '1', '2', '3', 'x', 'R', 'B', '0', '/']
-button_save = []
-
-
-cal_row = 1
-cal_column = 0
-
-for cal_button in cal_buttons:
-    cal_button = Button(calculator_panel, text= cal_button.title(), font=('Dosis', 16, 'bold'), fg='white', bg='CadetBlue3', bd=1, width=8)
-    cal_button.grid(row=cal_row, column= cal_column)
-
-    #Agregamos a la lista
-    button_save.append(cal_button)
-
-    #Valido hasta llegar a la columna y fila desas
-    if cal_column == 3:
-        cal_row += 1
-    cal_column += 1
-
-    if cal_column == 4:
-        cal_column = 0
-
-button_save[0].config(command=lambda : click_button('7'))
-button_save[1].config(command=lambda : click_button('8'))
-button_save[2].config(command=lambda : click_button('9'))
-button_save[3].config(command=lambda : click_button('+'))
-button_save[4].config(command=lambda : click_button('4'))
-button_save[5].config(command=lambda : click_button('5'))
-button_save[6].config(command=lambda : click_button('6'))
-button_save[7].config(command=lambda : click_button('-'))
-button_save[8].config(command=lambda : click_button('1'))
-button_save[9].config(command=lambda : click_button('2'))
-button_save[10].config(command=lambda : click_button('3'))
-button_save[11].config(command=lambda : click_button('*'))
-button_save[12].config(command=get_result)
-button_save[13].config(command=delete)
-button_save[14].config(command=lambda : click_button('0'))
-button_save[15].config(command=lambda : click_button('/'))
 
 
 app.mainloop()
